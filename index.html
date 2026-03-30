@@ -1,0 +1,280 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Sticker Collection</title>  
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+        }  body {  
+        font-family: 'Arial', sans-serif;  
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  
+        min-height: 100vh;  
+        padding: 20px;  
+    }  
+
+    .container {  
+        max-width: 1200px;  
+        margin: 0 auto;  
+    }  
+
+    h1 {  
+        text-align: center;  
+        color: white;  
+        font-size: 3rem;  
+        margin-bottom: 10px;  
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);  
+    }  
+
+    .subtitle {  
+        text-align: center;  
+        color: rgba(255,255,255,0.9);  
+        font-size: 1.2rem;  
+        margin-bottom: 40px;  
+    }  
+
+    .filters {  
+        display: flex;  
+        justify-content: center;  
+        gap: 15px;  
+        margin-bottom: 40px;  
+        flex-wrap: wrap;  
+    }  
+
+    .filter-btn {  
+        padding: 10px 20px;  
+        border: none;  
+        border-radius: 25px;  
+        background: rgba(255,255,255,0.2);  
+        color: white;  
+        cursor: pointer;  
+        transition: all 0.3s ease;  
+        backdrop-filter: blur(10px);  
+    }  
+
+    .filter-btn:hover, .filter-btn.active {  
+        background: rgba(255,255,255,0.4);  
+        transform: translateY(-2px);  
+    }  
+
+    .sticker-grid {  
+        display: grid;  
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  
+        gap: 25px;  
+        margin-bottom: 40px;  
+    }  
+
+    .sticker-card {  
+        background: rgba(255,255,255,0.95);  
+        border-radius: 20px;  
+        padding: 20px;  
+        text-align: center;  
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);  
+        transition: all 0.4s ease;  
+        position: relative;  
+        overflow: hidden;  
+    }  
+
+    .sticker-card::before {  
+        content: '';  
+        position: absolute;  
+        top: 0;  
+        left: 0;  
+        right: 0;  
+        height: 4px;  
+        background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);  
+        border-radius: 20px 20px 0 0;  
+    }  
+
+    .sticker-card:hover {  
+        transform: translateY(-10px) scale(1.02);  
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);  
+    }  
+
+    .sticker-emoji {  
+        font-size: 4rem;  
+        margin-bottom: 15px;  
+        display: block;  
+        transition: transform 0.3s ease;  
+    }  
+
+    .sticker-card:hover .sticker-emoji {  
+        transform: scale(1.2) rotate(10deg);  
+    }  
+
+    .sticker-name {  
+        font-size: 1.3rem;  
+        font-weight: bold;  
+        color: #333;  
+        margin-bottom: 5px;  
+    }  
+
+    .sticker-category {  
+        color: #666;  
+        font-size: 0.9rem;  
+        text-transform: uppercase;  
+        letter-spacing: 1px;  
+    }  
+
+    .search-box {  
+        width: 100%;  
+        max-width: 400px;  
+        margin: 0 auto 30px;  
+        display: block;  
+    }  
+
+    .search-input {  
+        width: 100%;  
+        padding: 15px 20px;  
+        border: none;  
+        border-radius: 30px;  
+        font-size: 1rem;  
+        background: rgba(255,255,255,0.9);  
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);  
+        transition: all 0.3s ease;  
+    }  
+
+    .search-input:focus {  
+        outline: none;  
+        background: white;  
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);  
+        transform: scale(1.02);  
+    }  
+
+    @media (max-width: 768px) {  
+        h1 {  
+            font-size: 2rem;  
+        }  
+          
+        .filters {  
+            flex-direction: column;  
+            align-items: center;  
+        }  
+          
+        .sticker-grid {  
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+            gap: 20px;  
+        }  
+    }  
+</style>
+
+</head>  
+<body>  
+    <div class="container">  
+        <h1>🎨 Sticker Collection</h1>  
+        <p class="subtitle">Discover amazing stickers for all occasions!</p>  <div class="search-box">  
+        <input type="text" class="search-input" id="searchInput" placeholder="Search stickers...">  
+    </div>  
+
+    <div class="filters">  
+        <button class="filter-btn active" data-category="all">All</button>  
+        <button class="filter-btn" data-category="emotions">Emotions</button>  
+        <button class="filter-btn" data-category="animals">Animals</button>  
+        <button class="filter-btn" data-category="food">Food</button>  
+        <button class="filter-btn" data-category="nature">Nature</button>  
+        <button class="filter-btn" data-category="objects">Objects</button>  
+    </div>  
+
+    <div class="sticker-grid" id="stickerGrid">  
+        <!-- Stickers will be populated by JavaScript -->  
+    </div>  
+</div>  
+
+<script>  
+    const stickers = [  
+        { emoji: '😀', name: 'Grinning Face', category: 'emotions' },  
+        { emoji: '😂', name: 'Face with Tears', category: 'emotions' },  
+        { emoji: '🥰', name: 'Smiling Face', category: 'emotions' },  
+        { emoji: '😢', name: 'Crying Face', category: 'emotions' },  
+        { emoji: '😎', name: 'Cool Sunglasses', category: 'emotions' },  
+        { emoji: '🤩', name: 'Star-Struck', category: 'emotions' },  
+        { emoji: '🐱', name: 'Cat Face', category: 'animals' },  
+        { emoji: '🐶', name: 'Dog Face', category: 'animals' },  
+        { emoji: '🦊', name: 'Fox Face', category: 'animals' },  
+        { emoji: '🐻', name: 'Bear Face', category: 'animals' },  
+        { emoji: '🐼', name: 'Panda Face', category: 'animals' },  
+        { emoji: '🦄', name: 'Unicorn', category: 'animals' },  
+        { emoji: '🍕', name: 'Pizza', category: 'food' },  
+        { emoji: '🍔', name: 'Hamburger', category: 'food' },  
+        { emoji: '🍩', name: 'Doughnut', category: 'food' },  
+        { emoji: '🍦', name: 'Ice Cream', category: 'food' },  
+        { emoji: '🍉', name: 'Watermelon', category: 'food' },  
+        { emoji: '🍫', name: 'Chocolate Bar', category: 'food' },  
+        { emoji: '🌸', name: 'Cherry Blossom', category: 'nature' },  
+        { emoji: '🌺', name: 'Hibiscus', category: 'nature' },  
+        { emoji: '🌈', name: 'Rainbow', category: 'nature' },  
+        { emoji: '🌞', name: 'Sun', category: 'nature' },  
+        { emoji: '⭐', name: 'Glowing Star', category: 'nature' },  
+        { emoji: '💫', name: 'Dizzy', category: 'nature' },  
+        { emoji: '📱', name: 'Mobile Phone', category: 'objects' },  
+        { emoji: '💻', name: 'Laptop', category: 'objects' },  
+        { emoji: '🎸', name: 'Guitar', category: 'objects' },  
+        { emoji: '🎮', name: 'Video Game', category: 'objects' },  
+        { emoji: '🚀', name: 'Rocket', category: 'objects' },  
+        { emoji: '🎁', name: 'Gift', category: 'objects' }  
+    ];  
+
+    const stickerGrid = document.getElementById('stickerGrid');  
+    const searchInput = document.getElementById('searchInput');  
+    const filterBtns = document.querySelectorAll('.filter-btn');  
+
+    function displayStickers(stickersToShow = stickers) {  
+        stickerGrid.innerHTML = '';  
+        stickersToShow.forEach(sticker => {  
+            const stickerCard = document.createElement('div');  
+            stickerCard.className = 'sticker-card';  
+            stickerCard.dataset.category = sticker.category;  
+            stickerCard.innerHTML = `  
+                <span class="sticker-emoji">${sticker.emoji}</span>  
+                <div class="sticker-name">${sticker.name}</div>  
+                <div class="sticker-category">${sticker.category.toUpperCase()}</div>  
+            `;  
+            stickerGrid.appendChild(stickerCard);  
+        });  
+    }  
+
+    function filterStickers(category) {  
+        let filteredStickers = stickers;  
+          
+        if (category !== 'all') {  
+            filteredStickers = stickers.filter(sticker => sticker.category === category);  
+        }  
+          
+        displayStickers(filteredStickers);  
+    }  
+
+    // Filter button event listeners  
+    filterBtns.forEach(btn => {  
+        btn.addEventListener('click', () => {  
+            filterBtns.forEach(b => b.classList.remove('active'));  
+            btn.classList.add('active');  
+            filterStickers(btn.dataset.category);  
+        });  
+    });  
+
+    // Search functionality  
+    searchInput.addEventListener('input', (e) => {  
+        const searchTerm = e.target.value.toLowerCase();  
+        const activeCategory = document.querySelector('.filter-btn.active').dataset.category;  
+          
+        let filteredStickers = stickers.filter(sticker =>   
+            sticker.name.toLowerCase().includes(searchTerm)  
+        );  
+          
+        if (activeCategory !== 'all') {  
+            filteredStickers = filteredStickers.filter(sticker =>   
+                sticker.category === activeCategory  
+            );  
+        }  
+          
+        displayStickers(filteredStickers);  
+    });  
+
+    // Initial load  
+    displayStickers();  
+</script>
+
+</body>  
+  </html>
